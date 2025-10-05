@@ -295,6 +295,34 @@ class WebSimplifyPopup {
             this.startExport();
         });
 
+        // Export tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.switchExportTab(e.target.dataset.tab);
+            });
+        });
+
+        // Share buttons
+        document.getElementById('shareEmail').addEventListener('click', () => {
+            this.shareContent('email');
+        });
+        document.getElementById('shareClipboard').addEventListener('click', () => {
+            this.shareContent('clipboard');
+        });
+        document.getElementById('shareSocial').addEventListener('click', () => {
+            this.shareContent('social');
+        });
+        document.getElementById('sharePrint').addEventListener('click', () => {
+            this.shareContent('print');
+        });
+
+        // Share format change
+        document.querySelectorAll('input[name="shareFormat"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                this.updateSharePreview();
+            });
+        });
+
         // Help modal
         document.getElementById('closeHelp').addEventListener('click', () => {
             this.closeHelp();
@@ -1265,6 +1293,157 @@ class WebSimplifyPopup {
         this.populateProfileForm();
         this.updateDomainStats();
         this.showStatus('Profile reset to defaults', 'info');
+    }
+
+    // Enhanced Export & Share Methods
+    switchExportTab(tabName) {
+        // Update tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.getElementById(`${tabName}-tab`).style.display = 'block';
+
+        // Update share preview if switching to share tab
+        if (tabName === 'share') {
+            this.updateSharePreview();
+        }
+    }
+
+    async startExport() {
+        try {
+            // Get export options
+            const format = document.querySelector('input[name="exportFormat"]:checked').value;
+            const options = {
+                includeOriginal: document.getElementById('includeOriginal').checked,
+                includeMetrics: document.getElementById('includeMetrics').checked,
+                includeTimestamp: document.getElementById('includeTimestamp').checked,
+                includeImages: document.getElementById('includeImages').checked,
+                preserveFormatting: document.getElementById('preserveFormatting').checked,
+                accessibility: document.getElementById('accessibilityMode').checked
+            };
+
+            this.showStatus('Preparing export...', 'info');
+
+            // Get content from current tab
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'getExportData',
+                options: options
+            });
+
+            if (response && response.data) {
+                // Load export manager if not already loaded
+                if (!window.ExportManager) {
+                    await this.loadExportManager();
+                }
+
+                const exportManager = new window.ExportManager();
+                const result = await exportManager.exportContent(response.data, { format, ...options });
+
+                if (result.success) {
+                    this.showStatus(`Export completed: ${result.filename}`, 'success');
+                    this.closeExportModal();
+                } else {
+                    this.showStatus('Export failed', 'error');
+                }
+            } else {
+                this.showStatus('No content available for export', 'error');
+            }
+        } catch (error) {
+            console.error('Export error:', error);
+            this.showStatus('Export failed: ' + error.message, 'error');
+        }
+    }
+
+    async shareContent(target) {
+        try {
+            const shareFormat = document.querySelector('input[name="shareFormat"]:checked').value;
+            
+            this.showStatus(`Preparing to share via ${target}...`, 'info');
+
+            // Get content from current tab
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'getExportData',
+                options: { format: shareFormat }
+            });
+
+            if (response && response.data) {
+                // Load export manager if not already loaded
+                if (!window.ExportManager) {
+                    await this.loadExportManager();
+                }
+
+                const exportManager = new window.ExportManager();
+                const result = await exportManager.shareContent(response.data, target, { format: shareFormat });
+
+                if (result.success) {
+                    this.showStatus(result.message, 'success');
+                    if (target === 'clipboard') {
+                        // Keep modal open for clipboard sharing
+                        this.updateSharePreview();
+                    } else {
+                        this.closeExportModal();
+                    }
+                } else {
+                    this.showStatus('Sharing failed', 'error');
+                }
+            } else {
+                this.showStatus('No content available for sharing', 'error');
+            }
+        } catch (error) {
+            console.error('Share error:', error);
+            this.showStatus('Sharing failed: ' + error.message, 'error');
+        }
+    }
+
+    async updateSharePreview() {
+        try {
+            const shareFormat = document.querySelector('input[name="shareFormat"]:checked').value;
+            const previewElement = document.getElementById('sharePreview');
+
+            // Get simplified content for preview
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'getExportData',
+                options: { format: shareFormat }
+            });
+
+            if (response && response.data) {
+                let previewText = '';
+                
+                switch (shareFormat) {
+                    case 'text':
+                        previewText = `${document.title}\n\n${response.data.simplifiedText.substring(0, 200)}...`;
+                        break;
+                    case 'markdown':
+                        previewText = `# ${document.title}\n\n${response.data.simplifiedText.substring(0, 200)}...`;
+                        break;
+                    case 'html':
+                        previewText = `<h1>${document.title}</h1>\n<p>${response.data.simplifiedText.substring(0, 200)}...</p>`;
+                        break;
+                }
+
+                previewElement.textContent = previewText;
+            } else {
+                previewElement.textContent = 'No content available for preview';
+            }
+        } catch (error) {
+            document.getElementById('sharePreview').textContent = 'Preview not available';
+        }
+    }
+
+    async loadExportManager() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('src/utils/export-manager.js');
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
     }
 }
 }
