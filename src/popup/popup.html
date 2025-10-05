@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSimplify Pro</title>
+    <link rel="stylesheet" href="../styles/popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="../../assets/icons/icon-32.png" alt="WebSimplify Pro" class="logo-icon">
+                <h1 class="title">WebSimplify Pro</h1>
+            </div>
+            <div class="complexity-indicator" id="complexityIndicator">
+                <span class="complexity-score" id="complexityScore">--</span>
+                <span class="complexity-label">Complexity</span>
+            </div>
+        </header>
+
+        <!-- Main Controls -->
+        <main class="main-controls">
+            <!-- Primary Action Button -->
+            <button class="simplify-btn" id="simplifyBtn">
+                <span class="btn-icon">🧠</span>
+                <span class="btn-text">Simplify Page</span>
+            </button>
+
+            <!-- Simplification Level Slider -->
+            <div class="level-control" id="levelControl" style="display: none;">
+                <label class="level-label">Simplification Level</label>
+                <div class="slider-container">
+                    <input type="range" class="level-slider" id="levelSlider" min="1" max="3" value="2">
+                    <div class="slider-labels">
+                        <span>Basic</span>
+                        <span>Medium</span>
+                        <span>Advanced</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reading Time Estimator -->
+            <div class="reading-time" id="readingTime" style="display: none;">
+                <div class="time-before">
+                    <span class="time-label">Original:</span>
+                    <span class="time-value" id="timeBefore">--</span>
+                </div>
+                <div class="time-after">
+                    <span class="time-label">Simplified:</span>
+                    <span class="time-value" id="timeAfter">--</span>
+                </div>
+                <div class="time-saved">
+                    <span class="saved-label">Time Saved:</span>
+                    <span class="saved-value" id="timeSaved">--</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions" id="quickActions" style="display: none;">
+            <button class="action-btn" id="splitViewBtn">
+                <span class="btn-icon">⚖️</span>
+                <span class="btn-text">Split View</span>
+            </button>
+            <button class="action-btn" id="heatmapBtn">
+                <span class="btn-icon">🔥</span>
+                <span class="btn-text">Heatmap</span>
+            </button>
+            <button class="action-btn" id="batchBtn">
+                <span class="btn-icon">📑</span>
+                <span class="btn-text">Batch</span>
+            </button>
+            <button class="action-btn" id="exportBtn">
+                <span class="btn-icon">💾</span>
+                <span class="btn-text">Export</span>
+            </button>
+            <button class="action-btn" id="resetBtn">
+                <span class="btn-icon">↺</span>
+                <span class="btn-text">Reset</span>
+            </button>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="status-message" id="statusMessage"></div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="pagesSimplified">0</span>
+                        <span class="stat-label">pages simplified</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="timeSavedTotal">0</span>
+                        <span class="stat-label">minutes saved</span>
+                    </div>
+                </div>
+                <div class="footer-buttons">
+                    <button class="dashboard-btn" id="dashboardBtn">
+                        <span class="btn-icon">📊</span>
+                        <span class="btn-text">Dashboard</span>
+                    </button>
+                    <button class="help-btn" id="helpBtn">
+                        <span class="btn-icon">❓</span>
+                        <span class="btn-text">Help</span>
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Performance Dashboard Modal -->
+        <div class="dashboard-modal" id="dashboardModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Performance Dashboard</h2>
+                    <button class="modal-close" id="closeDashboard">×</button>
+                </div>
+                <div class="dashboard-content">
+                    <div class="dashboard-section">
+                        <h3>Usage Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="dashboard-stat">
+                                <div class="stat-number" id="dashTotalPages">0</div>
+                                <div class="stat-description">Pages Simplified</div>
+                            </div>
+                            <div class="dashboard-stat">
+                                <div class="stat-number" id="dashTotalTime">0</div>
+                                <div class="stat-description">Minutes Saved</div>
+                            </div>
+                            <div class="dashboard-stat">
+                                <div class="stat-number" id="dashAvgComplexity">0</div>
+                                <div class="stat-description">Avg Complexity</div>
+                            </div>
+                            <div class="dashboard-stat">
+                                <div class="stat-number" id="dashAvgReduction">0%</div>
+                                <div class="stat-description">Avg Reduction</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section">
+                        <h3>Domain Analysis</h3>
+                        <div class="domain-stats" id="domainStats">
+                            <!-- Domain statistics will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-section">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="activityList">
+                            <!-- Recent activity will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Processing Modal -->
+        <div class="batch-modal" id="batchModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Batch Processing</h2>
+                    <button class="modal-close" id="closeBatch">×</button>
+                </div>
+                <div class="batch-content">
+                    <div class="batch-section">
+                        <h3>Select Tabs to Simplify</h3>
+                        <div class="tab-list" id="tabList">
+                            <!-- Tabs will be populated here -->
+                        </div>
+                    </div>
+                    <div class="batch-controls">
+                        <div class="batch-options">
+                            <label class="option-label">
+                                <input type="checkbox" id="selectAllTabs"> Select All
+                            </label>
+                            <div class="level-selector">
+                                <label>Simplification Level:</label>
+                                <select id="batchLevel">
+                                    <option value="1">Basic</option>
+                                    <option value="2" selected>Medium</option>
+                                    <option value="3">Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="batch-actions">
+                            <button class="btn-secondary" id="cancelBatch">Cancel</button>
+                            <button class="btn-primary" id="startBatch">Start Processing</button>
+                        </div>
+                    </div>
+                    <div class="batch-progress" id="batchProgress" style="display: none;">
+                        <div class="progress-header">
+                            <h3>Processing Tabs...</h3>
+                            <span class="progress-counter" id="progressCounter">0/0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="current-tab" id="currentTab">Preparing...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div class="export-modal" id="exportModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Export Simplified Content</h2>
+                    <button class="modal-close" id="closeExport">×</button>
+                </div>
+                <div class="export-content">
+                    <div class="export-options">
+                        <div class="export-format">
+                            <h3>Export Format</h3>
+                            <div class="format-options">
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="pdf" checked>
+                                    <span class="format-icon">📄</span>
+                                    <span class="format-name">PDF Document</span>
+                                </label>
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="html">
+                                    <span class="format-icon">🌐</span>
+                                    <span class="format-name">HTML File</span>
+                                </label>
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="txt">
+                                    <span class="format-icon">📝</span>
+                                    <span class="format-name">Plain Text</span>
+                                </label>
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="md">
+                                    <span class="format-icon">📋</span>
+                                    <span class="format-name">Markdown</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="export-settings">
+                            <h3>Export Settings</h3>
+                            <label class="setting-option">
+                                <input type="checkbox" id="includeOriginal" checked>
+                                Include original text comparison
+                            </label>
+                            <label class="setting-option">
+                                <input type="checkbox" id="includeMetrics" checked>
+                                Include reading time metrics
+                            </label>
+                            <label class="setting-option">
+                                <input type="checkbox" id="includeTimestamp" checked>
+                                Include timestamp and URL
+                            </label>
+                        </div>
+                    </div>
+                    <div class="export-actions">
+                        <button class="btn-secondary" id="cancelExport">Cancel</button>
+                        <button class="btn-primary" id="startExport">Export Content</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div class="help-modal" id="helpModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Help & Keyboard Shortcuts</h2>
+                    <button class="modal-close" id="closeHelp">×</button>
+                </div>
+                <div class="help-content">
+                    <div class="help-section">
+                        <h3>🚀 Getting Started</h3>
+                        <ul>
+                            <li>Click <strong>"Simplify Page"</strong> to make any webpage easier to read</li>
+                            <li>Use the <strong>slider</strong> to adjust simplification level</li>
+                            <li>Try <strong>"Split View"</strong> to compare original vs simplified</li>
+                            <li>Use <strong>"Heatmap"</strong> to see complexity hotspots</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>⌨️ Keyboard Shortcuts</h3>
+                        <div class="shortcuts-grid">
+                            <div class="shortcut-item">
+                                <kbd>Alt + S</kbd>
+                                <span>Toggle simplification</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + R</kbd>
+                                <span>Reset to original</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt + H</kbd>
+                                <span>Toggle heatmap</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Ctrl + Click</kbd>
+                                <span>Detailed comparison</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>🎯 Pro Tips</h3>
+                        <ul>
+                            <li><strong>Batch Processing:</strong> Simplify multiple tabs at once</li>
+                            <li><strong>Export:</strong> Save simplified content as PDF, HTML, or text</li>
+                            <li><strong>Hover Tooltips:</strong> See original text and metrics</li>
+                            <li><strong>Domain Intelligence:</strong> Automatic optimization for different content types</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>♿ Accessibility</h3>
+                        <ul>
+                            <li>Full keyboard navigation support</li>
+                            <li>Screen reader announcements</li>
+                            <li>High contrast mode compatible</li>
+                            <li>Reduced motion support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
