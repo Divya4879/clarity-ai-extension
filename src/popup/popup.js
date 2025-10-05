@@ -196,6 +196,14 @@ class WebSimplifyPopup {
         document.getElementById('closeHelp').addEventListener('click', () => {
             this.closeHelp();
         });
+
+        // Learning modal
+        document.getElementById('closeLearning').addEventListener('click', () => {
+            this.closeLearningMode();
+        });
+        document.getElementById('generateExample').addEventListener('click', () => {
+            this.generateNewExample();
+        });
     }
 
     openHelp() {
@@ -517,6 +525,10 @@ class WebSimplifyPopup {
 
         document.getElementById('heatmapBtn').addEventListener('click', () => {
             this.toggleHeatmap();
+        });
+
+        document.getElementById('learningBtn').addEventListener('click', () => {
+            this.openLearningMode();
         });
 
         document.getElementById('batchBtn').addEventListener('click', () => {
@@ -943,6 +955,93 @@ class WebSimplifyPopup {
             document.getElementById('quickActions').style.display = 'flex';
         }
     }
+
+    // Learning Mode Methods
+    openLearningMode() {
+        document.getElementById('learningModal').style.display = 'flex';
+        this.initializeLearningMode();
+    }
+
+    async togglePageLearningMode() {
+        try {
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'toggleLearningMode'
+            });
+
+            if (response && response.success) {
+                this.showStatus('Learning mode toggled', 'success');
+            } else {
+                this.showStatus('Failed to toggle learning mode', 'error');
+            }
+        } catch (error) {
+            this.showStatus('Learning mode not available on this page', 'error');
+        }
+    }
+
+    closeLearningMode() {
+        document.getElementById('learningModal').style.display = 'none';
+        this.updateLearningProgress();
+    }
+
+    async initializeLearningMode() {
+        const progress = await chrome.storage.sync.get({
+            conceptsLearned: 0,
+            examplesViewed: 0,
+            learningTime: 0
+        });
+
+        document.getElementById('conceptsLearned').textContent = progress.conceptsLearned;
+        document.getElementById('examplesViewed').textContent = progress.examplesViewed;
+        document.getElementById('learningTime').textContent = Math.floor(progress.learningTime / 60000);
+
+        this.learningStartTime = Date.now();
+    }
+
+    generateNewExample() {
+        const examples = [
+            {
+                original: "The implementation of quantum computational algorithms necessitates sophisticated mathematical frameworks.",
+                simplified: "Quantum computers need complex math to work.",
+                originalComplexity: 8,
+                simplifiedComplexity: 3
+            },
+            {
+                original: "Artificial intelligence technologies have precipitated unprecedented organizational transformations.",
+                simplified: "AI is changing how companies work in new ways.",
+                originalComplexity: 9,
+                simplifiedComplexity: 2
+            }
+        ];
+
+        const example = examples[Math.floor(Math.random() * examples.length)];
+        
+        document.getElementById('originalExample').textContent = example.original;
+        document.getElementById('simplifiedExample').textContent = example.simplified;
+        
+        document.querySelector('.example-original h4').textContent = `Original (Complexity: ${example.originalComplexity}/10)`;
+        document.querySelector('.example-simplified h4').textContent = `Simplified (Complexity: ${example.simplifiedComplexity}/10)`;
+
+        this.incrementExamplesViewed();
+    }
+
+    async incrementExamplesViewed() {
+        const result = await chrome.storage.sync.get({ examplesViewed: 0 });
+        await chrome.storage.sync.set({ examplesViewed: result.examplesViewed + 1 });
+        document.getElementById('examplesViewed').textContent = result.examplesViewed + 1;
+    }
+
+    async updateLearningProgress() {
+        if (!this.learningStartTime) return;
+
+        const sessionTime = Date.now() - this.learningStartTime;
+        const result = await chrome.storage.sync.get({ learningTime: 0, conceptsLearned: 0 });
+
+        await chrome.storage.sync.set({ 
+            learningTime: result.learningTime + sessionTime,
+            conceptsLearned: result.conceptsLearned + 1
+        });
+    }
+}
 }
 
 // Initialize popup when DOM is loaded
