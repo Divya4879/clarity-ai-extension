@@ -272,52 +272,135 @@
             <div class="modal-overlay"></div>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Export Simplified Content</h2>
+                    <h2>Export & Share Simplified Content</h2>
                     <button class="modal-close" id="closeExport">×</button>
                 </div>
                 <div class="export-content">
-                    <div class="export-options">
-                        <div class="export-format">
-                            <h3>Export Format</h3>
-                            <div class="format-options">
-                                <label class="format-option">
-                                    <input type="radio" name="exportFormat" value="pdf" checked>
-                                    <span class="format-icon">📄</span>
-                                    <span class="format-name">PDF Document</span>
+                    <div class="export-tabs">
+                        <button class="tab-btn active" data-tab="export">📄 Export</button>
+                        <button class="tab-btn" data-tab="share">🔗 Share</button>
+                    </div>
+                    
+                    <div class="tab-content" id="export-tab">
+                        <div class="export-options">
+                            <div class="export-format">
+                                <h3>Export Format</h3>
+                                <div class="format-options">
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="pdf" checked>
+                                        <span class="format-icon">📄</span>
+                                        <span class="format-name">PDF Document</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="html">
+                                        <span class="format-icon">🌐</span>
+                                        <span class="format-name">HTML File</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="txt">
+                                        <span class="format-icon">📝</span>
+                                        <span class="format-name">Plain Text</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="markdown">
+                                        <span class="format-icon">📋</span>
+                                        <span class="format-name">Markdown</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="docx">
+                                        <span class="format-icon">📄</span>
+                                        <span class="format-name">Word Document</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="exportFormat" value="epub">
+                                        <span class="format-icon">📚</span>
+                                        <span class="format-name">EPUB eBook</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="export-settings">
+                                <h3>Export Settings</h3>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="includeOriginal" checked>
+                                    Include original text comparison
                                 </label>
-                                <label class="format-option">
-                                    <input type="radio" name="exportFormat" value="html">
-                                    <span class="format-icon">🌐</span>
-                                    <span class="format-name">HTML File</span>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="includeMetrics" checked>
+                                    Include reading time metrics
                                 </label>
-                                <label class="format-option">
-                                    <input type="radio" name="exportFormat" value="txt">
-                                    <span class="format-icon">📝</span>
-                                    <span class="format-name">Plain Text</span>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="includeTimestamp" checked>
+                                    Include timestamp and URL
                                 </label>
-                                <label class="format-option">
-                                    <input type="radio" name="exportFormat" value="md">
-                                    <span class="format-icon">📋</span>
-                                    <span class="format-name">Markdown</span>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="includeImages" checked>
+                                    Include images and media
+                                </label>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="preserveFormatting" checked>
+                                    Preserve original formatting
+                                </label>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="accessibilityMode" checked>
+                                    Accessibility-optimized output
                                 </label>
                             </div>
                         </div>
-                        <div class="export-settings">
-                            <h3>Export Settings</h3>
-                            <label class="setting-option">
-                                <input type="checkbox" id="includeOriginal" checked>
-                                Include original text comparison
-                            </label>
-                            <label class="setting-option">
-                                <input type="checkbox" id="includeMetrics" checked>
-                                Include reading time metrics
-                            </label>
-                            <label class="setting-option">
-                                <input type="checkbox" id="includeTimestamp" checked>
-                                Include timestamp and URL
-                            </label>
+                        <div class="export-actions">
+                            <button class="export-btn" id="startExport">📥 Export Content</button>
+                            <button class="cancel-btn" id="cancelExport">Cancel</button>
                         </div>
                     </div>
+                    
+                    <div class="tab-content" id="share-tab" style="display: none;">
+                        <div class="share-options">
+                            <h3>Quick Share</h3>
+                            <div class="share-buttons">
+                                <button class="share-btn" id="shareEmail">
+                                    <span class="share-icon">📧</span>
+                                    <span class="share-text">Email</span>
+                                </button>
+                                <button class="share-btn" id="shareClipboard">
+                                    <span class="share-icon">📋</span>
+                                    <span class="share-text">Copy to Clipboard</span>
+                                </button>
+                                <button class="share-btn" id="shareSocial">
+                                    <span class="share-icon">🔗</span>
+                                    <span class="share-text">Social Media</span>
+                                </button>
+                                <button class="share-btn" id="sharePrint">
+                                    <span class="share-icon">🖨️</span>
+                                    <span class="share-text">Print</span>
+                                </button>
+                            </div>
+                            
+                            <div class="share-settings">
+                                <h3>Share Format</h3>
+                                <label class="setting-option">
+                                    <input type="radio" name="shareFormat" value="text" checked>
+                                    Plain text summary
+                                </label>
+                                <label class="setting-option">
+                                    <input type="radio" name="shareFormat" value="markdown">
+                                    Markdown with formatting
+                                </label>
+                                <label class="setting-option">
+                                    <input type="radio" name="shareFormat" value="html">
+                                    Rich HTML content
+                                </label>
+                            </div>
+                            
+                            <div class="share-preview">
+                                <h3>Share Preview</h3>
+                                <div class="preview-content" id="sharePreview">
+                                    <p>Select a sharing option to see preview...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
                     <div class="export-actions">
                         <button class="btn-secondary" id="cancelExport">Cancel</button>
                         <button class="btn-primary" id="startExport">Export Content</button>
