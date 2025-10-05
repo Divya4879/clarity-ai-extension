@@ -204,6 +204,17 @@ class WebSimplifyPopup {
         document.getElementById('generateExample').addEventListener('click', () => {
             this.generateNewExample();
         });
+
+        // Profile modal
+        document.getElementById('closeProfile').addEventListener('click', () => {
+            this.closeProfileSetup();
+        });
+        document.getElementById('saveProfile').addEventListener('click', () => {
+            this.saveUserProfile();
+        });
+        document.getElementById('resetProfile').addEventListener('click', () => {
+            this.resetUserProfile();
+        });
     }
 
     openHelp() {
@@ -529,6 +540,10 @@ class WebSimplifyPopup {
 
         document.getElementById('learningBtn').addEventListener('click', () => {
             this.openLearningMode();
+        });
+
+        document.getElementById('profileBtn').addEventListener('click', () => {
+            this.openProfileSetup();
         });
 
         document.getElementById('batchBtn').addEventListener('click', () => {
@@ -1041,6 +1056,114 @@ class WebSimplifyPopup {
             conceptsLearned: result.conceptsLearned + 1
         });
     }
+
+    // Profile Setup Methods
+    async openProfileSetup() {
+        document.getElementById('profileModal').style.display = 'flex';
+        await this.loadUserProfile();
+        this.populateProfileForm();
+        this.updateDomainStats();
+    }
+
+    closeProfileSetup() {
+        document.getElementById('profileModal').style.display = 'none';
+    }
+
+    async loadUserProfile() {
+        const profile = await chrome.storage.sync.get({
+            userProfile: {
+                experienceLevel: 'intermediate',
+                domains: {},
+                preferences: {
+                    technicalTerms: 'simplify',
+                    sentenceLength: 'medium',
+                    explanationDepth: 'moderate'
+                }
+            }
+        });
+
+        this.userProfile = profile.userProfile;
+    }
+
+    populateProfileForm() {
+        // Set experience level
+        const experienceRadio = document.querySelector(`input[name="experience"][value="${this.userProfile.experienceLevel}"]`);
+        if (experienceRadio) experienceRadio.checked = true;
+
+        // Set preferences
+        document.getElementById('technicalTerms').value = this.userProfile.preferences.technicalTerms;
+        document.getElementById('sentenceLength').value = this.userProfile.preferences.sentenceLength;
+        document.getElementById('explanationDepth').value = this.userProfile.preferences.explanationDepth;
+    }
+
+    updateDomainStats() {
+        const domains = ['academic', 'legal', 'technical', 'medical'];
+        
+        domains.forEach(domain => {
+            const domainData = this.userProfile.domains[domain];
+            const level = this.calculateDomainLevel(domainData);
+            const levelElement = document.getElementById(`${domain}Level`);
+            if (levelElement) {
+                levelElement.textContent = level;
+                levelElement.className = `stat-level ${level.toLowerCase()}`;
+            }
+        });
+    }
+
+    calculateDomainLevel(domainData) {
+        if (!domainData) return 'Novice';
+        
+        const visitScore = Math.min(domainData.visitCount / 20, 1);
+        const timeScore = Math.min(domainData.timeSpent / 3600000, 1);
+        const complexityScore = Math.min(domainData.complexityHandled / 10, 1);
+        const totalScore = (visitScore + timeScore + complexityScore) / 3;
+        
+        if (totalScore < 0.3) return 'Novice';
+        if (totalScore < 0.7) return 'Familiar';
+        return 'Expert';
+    }
+
+    async saveUserProfile() {
+        // Get experience level
+        const experienceLevel = document.querySelector('input[name="experience"]:checked')?.value || 'intermediate';
+        
+        // Get preferences
+        const preferences = {
+            technicalTerms: document.getElementById('technicalTerms').value,
+            sentenceLength: document.getElementById('sentenceLength').value,
+            explanationDepth: document.getElementById('explanationDepth').value
+        };
+
+        // Update profile
+        this.userProfile.experienceLevel = experienceLevel;
+        this.userProfile.preferences = preferences;
+
+        // Save to storage
+        await chrome.storage.sync.set({ userProfile: this.userProfile });
+
+        // Show success message
+        this.showStatus('Profile saved successfully!', 'success');
+        this.closeProfileSetup();
+    }
+
+    async resetUserProfile() {
+        const defaultProfile = {
+            experienceLevel: 'intermediate',
+            domains: {},
+            preferences: {
+                technicalTerms: 'simplify',
+                sentenceLength: 'medium',
+                explanationDepth: 'moderate'
+            }
+        };
+
+        await chrome.storage.sync.set({ userProfile: defaultProfile });
+        this.userProfile = defaultProfile;
+        this.populateProfileForm();
+        this.updateDomainStats();
+        this.showStatus('Profile reset to defaults', 'info');
+    }
+}
 }
 }
 
