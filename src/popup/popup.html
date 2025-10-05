@@ -68,6 +68,10 @@
                 <span class="btn-icon">🔥</span>
                 <span class="btn-text">Heatmap</span>
             </button>
+            <button class="action-btn" id="learningBtn">
+                <span class="btn-icon">🎓</span>
+                <span class="btn-text">Learn Mode</span>
+            </button>
             <button class="action-btn" id="batchBtn">
                 <span class="btn-icon">📑</span>
                 <span class="btn-text">Batch</span>
@@ -325,6 +329,114 @@
                             <li>High contrast mode compatible</li>
                             <li>Reduced motion support</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Mode Modal -->
+        <div class="learning-modal" id="learningModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🎓 Learning Mode</h2>
+                    <button class="modal-close" id="closeLearning">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="learning-content">
+                        <div class="learning-section">
+                            <h3>📚 How Simplification Works</h3>
+                            <div class="learning-steps">
+                                <div class="step-item">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>Content Analysis</h4>
+                                        <p>AI analyzes sentence structure, vocabulary complexity, and readability metrics</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>Complexity Scoring</h4>
+                                        <p>Each section gets a 1-10 complexity score based on multiple factors</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>Smart Transformation</h4>
+                                        <p>Text is rewritten using simpler words, shorter sentences, and clearer structure</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="learning-section">
+                            <h3>🔍 Live Example</h3>
+                            <div class="example-container" id="exampleContainer">
+                                <div class="example-original">
+                                    <h4>Original (Complexity: 8/10)</h4>
+                                    <p id="originalExample">The implementation of quantum computational algorithms necessitates the utilization of sophisticated mathematical frameworks and requires comprehensive understanding of quantum mechanical principles.</p>
+                                </div>
+                                <div class="example-simplified">
+                                    <h4>Simplified (Complexity: 3/10)</h4>
+                                    <p id="simplifiedExample">To use quantum computers, you need to understand math and quantum physics.</p>
+                                </div>
+                            </div>
+                            <button class="example-btn" id="generateExample">🔄 Try Another Example</button>
+                        </div>
+                        
+                        <div class="learning-section">
+                            <h3>🎯 Simplification Rules</h3>
+                            <div class="rules-grid">
+                                <div class="rule-item">
+                                    <span class="rule-icon">📝</span>
+                                    <div class="rule-content">
+                                        <h4>Shorter Sentences</h4>
+                                        <p>Break long sentences into smaller, digestible parts</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">💬</span>
+                                    <div class="rule-content">
+                                        <h4>Common Words</h4>
+                                        <p>Replace complex terms with everyday language</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">🎯</span>
+                                    <div class="rule-content">
+                                        <h4>Active Voice</h4>
+                                        <p>Convert passive voice to active for clarity</p>
+                                    </div>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">📋</span>
+                                    <div class="rule-content">
+                                        <h4>Better Structure</h4>
+                                        <p>Use bullet points and clear headings</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="learning-section">
+                            <h3>📊 Your Progress</h3>
+                            <div class="progress-stats" id="learningProgress">
+                                <div class="progress-item">
+                                    <span class="progress-value" id="conceptsLearned">0</span>
+                                    <span class="progress-label">Concepts Learned</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-value" id="examplesViewed">0</span>
+                                    <span class="progress-label">Examples Viewed</span>
+                                </div>
+                                <div class="progress-item">
+                                    <span class="progress-value" id="learningTime">0</span>
+                                    <span class="progress-label">Minutes Learning</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
