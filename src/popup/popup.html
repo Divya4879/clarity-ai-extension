@@ -3,30 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSimplify Pro</title>
+    <title>WebSimplify Pro - Accessibility-First Content Simplification</title>
     <link rel="stylesheet" href="../styles/popup.css">
 </head>
-<body>
+<body role="application" aria-label="WebSimplify Pro Extension">
+    <!-- Skip Links for Screen Readers -->
+    <div class="skip-links">
+        <a href="#main-controls" class="skip-link">Skip to main controls</a>
+        <a href="#quick-actions" class="skip-link">Skip to quick actions</a>
+        <a href="#stats" class="skip-link">Skip to statistics</a>
+    </div>
+
     <div class="container">
         <!-- Header -->
-        <header class="header">
+        <header class="header" role="banner">
             <div class="logo">
-                <img src="../../assets/icons/icon-32.png" alt="WebSimplify Pro" class="logo-icon">
+                <img src="../../assets/icons/icon-32.png" alt="WebSimplify Pro Logo" class="logo-icon">
                 <h1 class="title">WebSimplify Pro</h1>
             </div>
-            <div class="complexity-indicator" id="complexityIndicator">
-                <span class="complexity-score" id="complexityScore">--</span>
+            <div class="complexity-indicator" id="complexityIndicator" role="status" aria-live="polite">
+                <span class="complexity-score" id="complexityScore" aria-label="Current page complexity score">--</span>
                 <span class="complexity-label">Complexity</span>
             </div>
         </header>
 
         <!-- Main Controls -->
-        <main class="main-controls">
+        <main class="main-controls" id="main-controls" role="main">
             <!-- Primary Action Button -->
-            <button class="simplify-btn" id="simplifyBtn">
-                <span class="btn-icon">🧠</span>
+            <button class="simplify-btn" id="simplifyBtn" 
+                    aria-describedby="simplify-description"
+                    aria-keyshortcuts="Alt+S">
+                <span class="btn-icon" aria-hidden="true">🧠</span>
                 <span class="btn-text">Simplify Page</span>
             </button>
+            <div id="simplify-description" class="sr-only">
+                Simplifies the current page content for easier reading. Keyboard shortcut: Alt+S
+            </div>
 
             <!-- Simplification Level Slider -->
             <div class="level-control" id="levelControl" style="display: none;">
@@ -59,35 +71,75 @@
         </main>
 
         <!-- Quick Actions -->
-        <div class="quick-actions" id="quickActions" style="display: none;">
-            <button class="action-btn" id="splitViewBtn">
-                <span class="btn-icon">⚖️</span>
+        <div class="quick-actions" id="quick-actions" style="display: none;" role="group" aria-labelledby="quick-actions-label">
+            <h2 id="quick-actions-label" class="sr-only">Quick Actions</h2>
+            
+            <button class="action-btn" id="splitViewBtn" 
+                    aria-describedby="split-view-description"
+                    aria-pressed="false">
+                <span class="btn-icon" aria-hidden="true">⚖️</span>
                 <span class="btn-text">Split View</span>
             </button>
-            <button class="action-btn" id="heatmapBtn">
-                <span class="btn-icon">🔥</span>
+            <div id="split-view-description" class="sr-only">
+                Shows original and simplified content side by side for comparison
+            </div>
+            
+            <button class="action-btn" id="heatmapBtn" 
+                    aria-describedby="heatmap-description"
+                    aria-pressed="false"
+                    aria-keyshortcuts="Alt+H">
+                <span class="btn-icon" aria-hidden="true">🔥</span>
                 <span class="btn-text">Heatmap</span>
             </button>
-            <button class="action-btn" id="learningBtn">
-                <span class="btn-icon">🎓</span>
+            <div id="heatmap-description" class="sr-only">
+                Displays visual complexity heatmap overlay. Keyboard shortcut: Alt+H
+            </div>
+            
+            <button class="action-btn" id="learningBtn" 
+                    aria-describedby="learning-description">
+                <span class="btn-icon" aria-hidden="true">🎓</span>
                 <span class="btn-text">Learn Mode</span>
             </button>
-            <button class="action-btn" id="profileBtn">
-                <span class="btn-icon">👤</span>
+            <div id="learning-description" class="sr-only">
+                Opens interactive learning mode to understand simplification techniques
+            </div>
+            
+            <button class="action-btn" id="profileBtn" 
+                    aria-describedby="profile-description">
+                <span class="btn-icon" aria-hidden="true">👤</span>
                 <span class="btn-text">Profile</span>
             </button>
-            <button class="action-btn" id="batchBtn">
-                <span class="btn-icon">📑</span>
+            <div id="profile-description" class="sr-only">
+                Configure user profile and simplification preferences
+            </div>
+            
+            <button class="action-btn" id="batchBtn" 
+                    aria-describedby="batch-description">
+                <span class="btn-icon" aria-hidden="true">📑</span>
                 <span class="btn-text">Batch</span>
             </button>
-            <button class="action-btn" id="exportBtn">
-                <span class="btn-icon">💾</span>
+            <div id="batch-description" class="sr-only">
+                Process multiple browser tabs simultaneously
+            </div>
+            
+            <button class="action-btn" id="exportBtn" 
+                    aria-describedby="export-description">
+                <span class="btn-icon" aria-hidden="true">💾</span>
                 <span class="btn-text">Export</span>
             </button>
-            <button class="action-btn" id="resetBtn">
-                <span class="btn-icon">↺</span>
+            <div id="export-description" class="sr-only">
+                Export simplified content in various formats
+            </div>
+            
+            <button class="action-btn" id="resetBtn" 
+                    aria-describedby="reset-description"
+                    aria-keyshortcuts="Alt+R">
+                <span class="btn-icon" aria-hidden="true">↺</span>
                 <span class="btn-text">Reset</span>
             </button>
+            <div id="reset-description" class="sr-only">
+                Reset page to original content. Keyboard shortcut: Alt+R
+            </div>
         </div>
 
         <!-- Status Messages -->
