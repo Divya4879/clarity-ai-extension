@@ -72,6 +72,10 @@
                 <span class="btn-icon">🎓</span>
                 <span class="btn-text">Learn Mode</span>
             </button>
+            <button class="action-btn" id="profileBtn">
+                <span class="btn-icon">👤</span>
+                <span class="btn-text">Profile</span>
+            </button>
             <button class="action-btn" id="batchBtn">
                 <span class="btn-icon">📑</span>
                 <span class="btn-text">Batch</span>
@@ -436,6 +440,121 @@
                                     <span class="progress-label">Minutes Learning</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Setup Modal -->
+        <div class="profile-modal" id="profileModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>👤 User Profile Setup</h2>
+                    <button class="modal-close" id="closeProfile">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-content">
+                        <div class="profile-section">
+                            <h3>📊 Experience Level</h3>
+                            <div class="experience-options">
+                                <label class="option-card">
+                                    <input type="radio" name="experience" value="beginner">
+                                    <div class="card-content">
+                                        <span class="card-icon">🌱</span>
+                                        <h4>Beginner</h4>
+                                        <p>I prefer simple explanations and basic language</p>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="experience" value="intermediate" checked>
+                                    <div class="card-content">
+                                        <span class="card-icon">📚</span>
+                                        <h4>Intermediate</h4>
+                                        <p>I can handle moderate complexity with some technical terms</p>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="experience" value="expert">
+                                    <div class="card-content">
+                                        <span class="card-icon">🎓</span>
+                                        <h4>Expert</h4>
+                                        <p>I prefer detailed explanations with technical accuracy</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>🎯 Simplification Preferences</h3>
+                            <div class="preference-grid">
+                                <div class="preference-item">
+                                    <label>Technical Terms:</label>
+                                    <select id="technicalTerms">
+                                        <option value="simplify">Always simplify</option>
+                                        <option value="explain">Explain when used</option>
+                                        <option value="keep">Keep original</option>
+                                    </select>
+                                </div>
+                                <div class="preference-item">
+                                    <label>Sentence Length:</label>
+                                    <select id="sentenceLength">
+                                        <option value="short">Prefer short</option>
+                                        <option value="medium">Medium length</option>
+                                        <option value="long">Keep original</option>
+                                    </select>
+                                </div>
+                                <div class="preference-item">
+                                    <label>Explanation Depth:</label>
+                                    <select id="explanationDepth">
+                                        <option value="basic">Basic overview</option>
+                                        <option value="moderate">Moderate detail</option>
+                                        <option value="detailed">Full detail</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>📈 Domain Familiarity</h3>
+                            <div class="domain-stats" id="domainStats">
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <span class="stat-icon">🎓</span>
+                                        <div class="stat-info">
+                                            <span class="stat-label">Academic</span>
+                                            <span class="stat-level" id="academicLevel">Novice</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <span class="stat-icon">⚖️</span>
+                                        <div class="stat-info">
+                                            <span class="stat-label">Legal</span>
+                                            <span class="stat-level" id="legalLevel">Novice</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <span class="stat-icon">💻</span>
+                                        <div class="stat-info">
+                                            <span class="stat-label">Technical</span>
+                                            <span class="stat-level" id="technicalLevel">Novice</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <span class="stat-icon">🏥</span>
+                                        <div class="stat-info">
+                                            <span class="stat-label">Medical</span>
+                                            <span class="stat-level" id="medicalLevel">Novice</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="save-profile-btn" id="saveProfile">💾 Save Profile</button>
+                            <button class="reset-profile-btn" id="resetProfile">🔄 Reset to Defaults</button>
                         </div>
                     </div>
                 </div>
