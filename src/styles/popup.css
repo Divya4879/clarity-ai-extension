@@ -947,6 +947,251 @@ button[aria-pressed="true"]:focus {
     font-size: 18px;
 }
 
+/* Enhanced Export Modal */
+.export-modal .modal-content {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.export-tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    color: white;
+    border-bottom-color: #51cf66;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Share Options */
+.share-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.share-icon {
+    font-size: 18px;
+}
+
+.share-text {
+    font-weight: 500;
+}
+
+/* Share Settings */
+.share-settings {
+    margin-bottom: 24px;
+}
+
+.share-settings h3 {
+    color: white;
+    margin: 0 0 12px 0;
+    font-size: 16px;
+}
+
+/* Share Preview */
+.share-preview {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.share-preview h3 {
+    color: white;
+    margin: 0 0 12px 0;
+    font-size: 16px;
+}
+
+.preview-content {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    line-height: 1.5;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* Enhanced Format Options */
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.format-option {
+    display: block;
+    cursor: pointer;
+}
+
+.format-option input[type="radio"] {
+    display: none;
+}
+
+.format-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.format-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.format-option input[type="radio"]:checked + .format-option,
+.format-option:has(input[type="radio"]:checked) {
+    border-color: #51cf66;
+    background: rgba(81, 207, 102, 0.2);
+}
+
+.format-icon {
+    font-size: 24px;
+}
+
+.format-name {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Enhanced Export Settings */
+.export-settings {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.export-settings h3 {
+    color: white;
+    margin: 0 0 16px 0;
+    font-size: 16px;
+}
+
+.setting-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.setting-option input[type="checkbox"],
+.setting-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #51cf66;
+}
+
+.setting-option:last-child {
+    margin-bottom: 0;
+}
+
+/* Export Actions */
+.export-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.export-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #51cf66, #40c057);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(81, 207, 102, 0.3);
+}
+
+.cancel-btn {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .example-container {
