@@ -380,7 +380,238 @@ body {
     font-weight: 500;
 }
 
+/* Learning Mode Modal */
+.learning-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.learning-modal .modal-content {
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.learning-content {
+    padding: 0;
+}
+
+.learning-section {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.learning-section:last-child {
+    border-bottom: none;
+}
+
+.learning-section h3 {
+    color: white;
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Learning Steps */
+.learning-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    color: white;
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.step-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Example Container */
+.example-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.example-original,
+.example-simplified {
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.example-original h4 {
+    color: #ff6b6b;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.example-simplified h4 {
+    color: #51cf66;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.example-original p,
+.example-simplified p {
+    color: white;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.example-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #51cf66, #40c057);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.example-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(81, 207, 102, 0.3);
+}
+
+/* Rules Grid */
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.rule-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.rule-content h4 {
+    color: white;
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.rule-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Progress Stats */
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.progress-item {
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.progress-value {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #51cf66;
+    margin-bottom: 4px;
+}
+
+.progress-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Responsive Design */
+@media (max-width: 600px) {
+    .example-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .rules-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .learning-steps {
+        gap: 12px;
+    }
+    
+    .step-item {
+        padding: 12px;
+    }
+}
 @media (max-width: 320px) {
     body {
         width: 300px;
