@@ -798,6 +798,155 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
+/* Accessibility Enhancements */
+
+/* Screen Reader Only Content */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Skip Links */
+.skip-links {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    z-index: 10001;
+}
+
+.skip-link {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.skip-link:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    left: auto;
+    top: auto;
+    overflow: visible;
+    z-index: 10002;
+}
+
+/* Enhanced Focus Indicators */
+*:focus {
+    outline: 3px solid #4A90E2 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 1px #fff, 0 0 0 5px #4A90E2 !important;
+}
+
+button:focus,
+.action-btn:focus,
+.simplify-btn:focus {
+    outline: 3px solid #4A90E2 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #4A90E2 !important;
+    transform: scale(1.02);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    * {
+        background: #000 !important;
+        color: #ffff00 !important;
+        border-color: #ffff00 !important;
+    }
+    
+    button, .action-btn, .simplify-btn {
+        background: #ffff00 !important;
+        color: #000 !important;
+        border: 2px solid #ffff00 !important;
+    }
+    
+    *:focus {
+        outline: 4px solid #00ffff !important;
+        background: #000 !important;
+        color: #00ffff !important;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Large Text Support */
+@media (min-resolution: 2dppx) {
+    body {
+        font-size: 16px;
+    }
+    
+    .btn-text, .action-btn .btn-text {
+        font-size: 14px;
+    }
+}
+
+/* Keyboard Navigation Enhancements */
+.container:focus-within {
+    box-shadow: 0 0 0 3px #4A90E2;
+}
+
+/* ARIA Live Region Styling */
+[aria-live] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Button State Indicators */
+button[aria-pressed="true"] {
+    background: #4A90E2 !important;
+    color: white !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button[aria-pressed="true"]:focus {
+    outline-color: #ff6b6b !important;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #ff6b6b !important;
+}
+
+/* Modal Accessibility */
+.modal-content {
+    role: dialog;
+}
+
+.modal-content:focus {
+    outline: none;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .example-container {
