@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "WebSimplify Pro",
+  "version": "1.0.0",
+  "description": "Cognitive Load Optimizer - Transform complex web content into clear, accessible information instantly",
+  
+  "origin_trial_tokens": [
+    "A63CLBgJRvMdYmSA1HJGUu9PGOyd373NvNRy+4xPTWLHmmwgdc0FnADQzstlYKlSgGGBHAqiRR0r0oO1j+EaVAAAAACAeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vcGdhY2pkY2lqYWVlZW1pYmVkbm1tb2VrYmFmZmZlamMiLCJmZWF0dXJlIjoiQUlXcml0ZXJBUEkiLCJleHBpcnkiOjE3Njk0NzIwMDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0=",
+    "A4E8fw8qw/XvKJKIM30T+h1et30Yeo/+nNeyXoHTgBQu7QmWSEKiz8/9jWsKFtX7hfhA/QoQdO42XNfl8iPcUQ4AAACHeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vcGdhY2pkY2lqYWVlZW1pYmVkbm1tb2VrYmFmZmZlamMiLCJmZWF0dXJlIjoiQUlTdW1tYXJpemF0aW9uQVBJIiwiZXhwaXJ5IjoxNzYwNDAwMDAwLCJpc1RoaXJkUGFydHkiOnRydWV9",
+    "A0sPGLji4cElsZTffB4iZVCb5d8ubGS8U1nw110BskvDEExl7xUtu2Njdk0bUXELnAo3lxN8IW/pLocnqi5qoAkAAACCeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vcGdhY2pkY2lqYWVlZW1pYmVkbm1tb2VrYmFmZmZlamMiLCJmZWF0dXJlIjoiQUlSZXdyaXRlckFQSSIsImV4cGlyeSI6MTc2OTQ3MjAwMCwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==",
+    "AyDLP2wn/dyBPEePzoSBiR8aG+MCM6sJPy0aIiWrNGGJpesyG4Q1G6HowH/HZrY6OcGruAUHPv7GrL5wu73h7gsAAACMeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vcGdhY2pkY2lqYWVlZW1pYmVkbm1tb2VrYmFmZmZlamMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElGb3JFeHRlbnNpb24iLCJleHBpcnkiOjE3NjA0ODYzOTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0=",
+    "A1OobkyZOAH5mjHcjW2ib0H6Acd6sYbxJexO8ZpKI4myNVikhgtyyUWAEm1CrnPvTob4sXIVge/iVXgQA8VpVgIAAACPeyJvcmlnaW4iOiJjaHJvbWUtZXh0ZW5zaW9uOi8vcGdhY2pkY2lqYWVlZW1pYmVkbm1tb2VrYmFmZmZlamMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElNdWx0aW1vZGFsSW5wdXQiLCJleHBpcnkiOjE3NzQzMTA0MDAsImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="
+  ],
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content-script.js"],
+      "css": ["src/styles/content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "WebSimplify Pro",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "128": "assets/icons/icon-128.png"
+    }
+  },
+  
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["src/styles/*", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
