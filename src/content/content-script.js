@@ -27,11 +27,51 @@ class WebSimplifyContent {
         this.setupMessageListener();
         this.injectStyles();
         this.setupWindowHandlers();
+        this.initializeAccessibility();
+        this.pageLoadTime = Date.now();
         
         // Test Chrome AI APIs on initialization
         setTimeout(() => {
             this.testAIAPIsOnLoad();
         }, 2000);
+    }
+
+    async initializeAccessibility() {
+        // Load accessibility manager
+        if (!window.AccessibilityManager) {
+            await this.loadAccessibilityManager();
+        }
+
+        // Initialize accessibility features
+        this.accessibilityManager = new window.AccessibilityManager();
+        
+        // Setup accessibility event listeners
+        this.setupAccessibilityEvents();
+    }
+
+    async loadAccessibilityManager() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('src/utils/accessibility-manager.js');
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
+    setupAccessibilityEvents() {
+        // Listen for accessibility-triggered events
+        document.addEventListener('accessibilitySimplify', () => {
+            this.simplifyPage();
+        });
+
+        document.addEventListener('accessibilityReset', () => {
+            this.restoreOriginal();
+        });
+
+        document.addEventListener('accessibilityHeatmap', () => {
+            this.toggleHeatmap();
+        });
     }
 
     async testAIAPIsOnLoad() {
