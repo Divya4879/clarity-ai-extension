@@ -55,7 +55,7 @@
   
   "web_accessible_resources": [
     {
-      "resources": ["src/styles/*", "assets/*"],
+      "resources": ["src/styles/*", "assets/*", "src/content/learning-overlay.js"],
       "matches": ["<all_urls>"]
     }
   ]
