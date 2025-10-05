@@ -794,6 +794,20 @@ class WebSimplifyContent {
         }
 
         return await this.measurePerformanceAsync('simplifyPage', async () => {
+            // Load context analyzer if not already loaded
+            if (!window.ContextAnalyzer) {
+                await this.loadContextAnalyzer();
+            }
+
+            // Analyze user context for adaptive simplification
+            const contextAnalyzer = new window.ContextAnalyzer();
+            const domain = window.location.hostname;
+            const contextAnalysis = await contextAnalyzer.analyzeUserContext(domain, this.mainContent);
+            
+            // Use contextual level if available, otherwise use provided level
+            const adaptiveLevel = contextAnalysis.simplificationLevel || level;
+            const adaptivePrompt = contextAnalysis.adaptivePrompt;
+
             // Store original content
             if (!this.originalContent) {
                 this.originalContent = this.mainContent.innerHTML;
@@ -806,9 +820,9 @@ class WebSimplifyContent {
                 let simplifiedText;
                 
                 if (await this.isAIAvailable()) {
-                    simplifiedText = await this.simplifyWithAI(text, level);
+                    simplifiedText = await this.simplifyWithAI(text, adaptiveLevel, adaptivePrompt);
                 } else {
-                    simplifiedText = await this.simplifyBasic(text, level);
+                    simplifiedText = await this.simplifyBasic(text, adaptiveLevel);
                 }
 
                 // Apply simplified content with performance optimization
@@ -821,9 +835,15 @@ class WebSimplifyContent {
                 // Add accessibility enhancements
                 this.addAccessibilityFeatures();
 
+                // Update user profile with domain experience
+                await contextAnalyzer.updateUserProfile(domain, this.complexityScore, Date.now() - (this.pageLoadTime || Date.now()));
+
                 return {
                     success: true,
-                    readingTime: readingTime
+                    readingTime: readingTime,
+                    contextual: true,
+                    adaptiveLevel: adaptiveLevel,
+                    domainFamiliarity: contextAnalysis.domainFamiliarity.level
                 };
             } catch (error) {
                 console.error('Simplification error:', error);
@@ -1068,7 +1088,7 @@ class WebSimplifyContent {
         }
     }
 
-    async simplifyWithAI(text, level) {
+    async simplifyWithAI(text, level, adaptivePrompt = null) {
         try {
             const domain = this.detectDomain();
             
@@ -1078,9 +1098,9 @@ class WebSimplifyContent {
             // 1. Try Rewriter API first (most appropriate for simplification)
             if ('ai' in window && 'rewriter' in window.ai) {
                 try {
-                    simplifiedText = await this.simplifyWithRewriter(text, level, domain);
+                    simplifiedText = await this.simplifyWithRewriter(text, level, domain, adaptivePrompt);
                     if (simplifiedText) {
-                        console.log('Used Rewriter API for simplification');
+                        console.log('Used Rewriter API for contextual simplification');
                         return simplifiedText;
                     }
                 } catch (e) {
@@ -1091,9 +1111,9 @@ class WebSimplifyContent {
             // 2. Try Writer API for generating new simplified content
             if ('ai' in window && 'writer' in window.ai) {
                 try {
-                    simplifiedText = await this.simplifyWithWriter(text, level, domain);
+                    simplifiedText = await this.simplifyWithWriter(text, level, domain, adaptivePrompt);
                     if (simplifiedText) {
-                        console.log('Used Writer API for simplification');
+                        console.log('Used Writer API for contextual simplification');
                         return simplifiedText;
                     }
                 } catch (e) {
@@ -1124,7 +1144,7 @@ class WebSimplifyContent {
         }
     }
 
-    async simplifyWithRewriter(text, level, domain) {
+    async simplifyWithRewriter(text, level, domain, adaptivePrompt = null) {
         try {
             const rewriter = await window.ai.rewriter.create({
                 tone: level === 1 ? 'casual' : level === 2 ? 'neutral' : 'formal',
@@ -1136,9 +1156,8 @@ class WebSimplifyContent {
             const simplifiedChunks = [];
 
             for (const chunk of chunks) {
-                const result = await rewriter.rewrite(chunk, {
-                    context: `This is ${domain} content. Make it easier to understand.`
-                });
+                const context = adaptivePrompt || `This is ${domain} content. Make it easier to understand.`;
+                const result = await rewriter.rewrite(chunk, { context });
                 simplifiedChunks.push(result);
             }
 
@@ -2623,6 +2642,16 @@ class WebSimplifyContent {
         `;
         
         document.head.appendChild(style);
+    }
+
+    async loadContextAnalyzer() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('src/utils/context-analyzer.js');
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
     }
 
     // Learning Mode Methods
