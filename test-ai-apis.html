@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chrome AI APIs Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Chrome AI APIs Test</h1>
+    <p><strong>Extension ID:</strong> pgacjdcijaeeemibednmmoekbafffejc</p>
+    
+    <div id="results"></div>
+    
+    <button onclick="testAllAPIs()">Test All APIs</button>
+    <button onclick="testWriter()">Test Writer API</button>
+    <button onclick="testRewriter()">Test Rewriter API</button>
+    <button onclick="testSummarizer()">Test Summarizer API</button>
+    <button onclick="testPrompt()">Test Prompt API</button>
+
+    <script>
+        const testText = "The implementation of quantum computing algorithms requires sophisticated understanding of quantum mechanical principles and their practical applications in computational systems.";
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            document.getElementById('results').appendChild(div);
+        }
+
+        async function testAllAPIs() {
+            document.getElementById('results').innerHTML = '';
+            log('🚀 Starting Chrome AI APIs test...', 'info');
+            
+            // Check if window.ai exists
+            if (!('ai' in window)) {
+                log('❌ window.ai is not available. Chrome AI APIs not loaded.', 'error');
+                return;
+            }
+            
+            log('✅ window.ai is available', 'success');
+            
+            // Test each API
+            await testWriter();
+            await testRewriter();
+            await testSummarizer();
+            await testPrompt();
+        }
+
+        async function testWriter() {
+            log('Testing Writer API...', 'info');
+            
+            if (!('writer' in window.ai)) {
+                log('❌ Writer API not available in window.ai', 'error');
+                return;
+            }
+            
+            try {
+                const capabilities = await window.ai.writer.capabilities();
+                log(`Writer API capabilities: ${JSON.stringify(capabilities)}`, 'info');
+                
+                if (capabilities.available === 'readily') {
+                    const writer = await window.ai.writer.create();
+                    const result = await writer.write(`Simplify this text: ${testText}`);
+                    writer.destroy();
+                    log(`✅ Writer API working! Result: ${result.substring(0, 100)}...`, 'success');
+                } else {
+                    log(`❌ Writer API not ready: ${capabilities.available}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Writer API error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testRewriter() {
+            log('Testing Rewriter API...', 'info');
+            
+            if (!('rewriter' in window.ai)) {
+                log('❌ Rewriter API not available in window.ai', 'error');
+                return;
+            }
+            
+            try {
+                const capabilities = await window.ai.rewriter.capabilities();
+                log(`Rewriter API capabilities: ${JSON.stringify(capabilities)}`, 'info');
+                
+                if (capabilities.available === 'readily') {
+                    const rewriter = await window.ai.rewriter.create();
+                    const result = await rewriter.rewrite(testText);
+                    rewriter.destroy();
+                    log(`✅ Rewriter API working! Result: ${result.substring(0, 100)}...`, 'success');
+                } else {
+                    log(`❌ Rewriter API not ready: ${capabilities.available}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Rewriter API error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSummarizer() {
+            log('Testing Summarizer API...', 'info');
+            
+            if (!('summarizer' in window.ai)) {
+                log('❌ Summarizer API not available in window.ai', 'error');
+                return;
+            }
+            
+            try {
+                const capabilities = await window.ai.summarizer.capabilities();
+                log(`Summarizer API capabilities: ${JSON.stringify(capabilities)}`, 'info');
+                
+                if (capabilities.available === 'readily') {
+                    const summarizer = await window.ai.summarizer.create();
+                    const result = await summarizer.summarize(testText);
+                    summarizer.destroy();
+                    log(`✅ Summarizer API working! Result: ${result.substring(0, 100)}...`, 'success');
+                } else {
+                    log(`❌ Summarizer API not ready: ${capabilities.available}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Summarizer API error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testPrompt() {
+            log('Testing Prompt API...', 'info');
+            
+            if (!('languageModel' in window.ai)) {
+                log('❌ Prompt API not available in window.ai', 'error');
+                return;
+            }
+            
+            try {
+                const capabilities = await window.ai.languageModel.capabilities();
+                log(`Prompt API capabilities: ${JSON.stringify(capabilities)}`, 'info');
+                
+                if (capabilities.available === 'readily') {
+                    const session = await window.ai.languageModel.create();
+                    const result = await session.prompt(`Simplify this text: ${testText}`);
+                    session.destroy();
+                    log(`✅ Prompt API working! Result: ${result.substring(0, 100)}...`, 'success');
+                } else {
+                    log(`❌ Prompt API not ready: ${capabilities.available}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Prompt API error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testAllAPIs, 1000);
+        });
+    </script>
+</body>
+</html>
