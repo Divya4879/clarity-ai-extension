@@ -1,0 +1,659 @@
+/* WebSimplify Pro - Enhanced Content Styles */
+
+/* Simplified content styling */
+.websimplify-simplified {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.7 !important;
+    color: #2c3e50 !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    padding: 32px !important;
+    margin: 20px auto !important;
+    max-width: 800px !important;
+    transition: all 0.3s ease !important;
+}
+
+.websimplify-heading {
+    color: #34495e !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    margin: 32px 0 16px 0 !important;
+    padding-bottom: 8px !important;
+    border-bottom: 2px solid #3498db !important;
+}
+
+.websimplify-paragraph {
+    margin-bottom: 20px !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    text-align: left !important;
+}
+
+.websimplify-list {
+    margin: 20px 0 !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+}
+
+.websimplify-list-item {
+    margin-bottom: 12px !important;
+    padding: 12px 16px !important;
+    background: #f8f9fa !important;
+    border-left: 4px solid #3498db !important;
+    border-radius: 6px !important;
+    position: relative !important;
+}
+
+.websimplify-list-item::before {
+    content: "•" !important;
+    color: #3498db !important;
+    font-weight: bold !important;
+    position: absolute !important;
+    left: -8px !important;
+    background: white !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+}
+
+.websimplify-important {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7) !important;
+    border: 1px solid #f39c12 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+    margin: 20px 0 !important;
+    font-weight: 500 !important;
+    position: relative !important;
+}
+
+.websimplify-important::before {
+    content: "💡" !important;
+    position: absolute !important;
+    top: 16px !important;
+    left: 16px !important;
+    font-size: 18px !important;
+}
+
+.websimplify-important {
+    padding-left: 48px !important;
+}
+
+/* Enhanced tooltip styles */
+.websimplify-tooltip {
+    position: fixed !important;
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    max-width: 300px !important;
+    z-index: 10001 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transform: translateY(10px) !important;
+    animation: websimplify-tooltip-in 0.3s ease forwards !important;
+}
+
+@keyframes websimplify-tooltip-in {
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+
+.websimplify-tooltip::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 50% !important;
+    margin-left: -6px !important;
+    border-width: 6px !important;
+    border-style: solid !important;
+    border-color: #2c3e50 transparent transparent transparent !important;
+}
+
+/* Hover effects */
+.websimplify-paragraph:hover,
+.websimplify-list-item:hover {
+    background: #f1f2f6 !important;
+    transform: translateX(4px) !important;
+    transition: all 0.2s ease !important;
+}
+
+.websimplify-heading:hover {
+    color: #3498db !important;
+    transition: color 0.2s ease !important;
+}
+
+/* Complexity heatmap overlay - Enhanced */
+.websimplify-heatmap {
+    position: absolute !important;
+    pointer-events: none !important;
+    border-radius: 6px !important;
+    transition: all 0.4s ease !important;
+    z-index: 9999 !important;
+    opacity: 0 !important;
+    animation: websimplify-heatmap-fade-in 0.5s ease forwards !important;
+}
+
+@keyframes websimplify-heatmap-fade-in {
+    to { opacity: 1 !important; }
+}
+
+.websimplify-heatmap.complexity-low {
+    background: rgba(46, 204, 113, 0.15) !important;
+    border: 2px solid rgba(46, 204, 113, 0.4) !important;
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.2) !important;
+}
+
+.websimplify-heatmap.complexity-medium {
+    background: rgba(230, 126, 34, 0.15) !important;
+    border: 2px solid rgba(230, 126, 34, 0.4) !important;
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.2) !important;
+}
+
+.websimplify-heatmap.complexity-high {
+    background: rgba(231, 76, 60, 0.15) !important;
+    border: 2px solid rgba(231, 76, 60, 0.4) !important;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.2) !important;
+}
+
+/* Split view container - Enhanced */
+.websimplify-split-container {
+    display: flex !important;
+    gap: 24px !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 20px !important;
+    background: #f8f9fa !important;
+    border-radius: 12px !important;
+}
+
+.websimplify-split-original,
+.websimplify-split-simplified {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    max-height: 80vh !important;
+    padding: 24px !important;
+    border: 2px solid #e9ecef !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.websimplify-split-original {
+    background: #ffffff !important;
+    border-color: #dee2e6 !important;
+}
+
+.websimplify-split-simplified {
+    background: #ffffff !important;
+    border-color: #3498db !important;
+}
+
+.websimplify-split-original::before {
+    content: "Original" !important;
+    display: block !important;
+    font-weight: 600 !important;
+    color: #6c757d !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+.websimplify-split-simplified::before {
+    content: "Simplified" !important;
+    display: block !important;
+    font-weight: 600 !important;
+    color: #3498db !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid #3498db !important;
+}
+
+/* Loading animation - Enhanced */
+.websimplify-loading {
+    position: relative !important;
+    opacity: 0.7 !important;
+    overflow: hidden !important;
+}
+
+.websimplify-loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(52, 152, 219, 0.4), 
+        rgba(52, 152, 219, 0.6),
+        rgba(52, 152, 219, 0.4),
+        transparent) !important;
+    animation: websimplify-shimmer 2s infinite !important;
+}
+
+@keyframes websimplify-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Responsive design - Enhanced */
+@media (max-width: 768px) {
+    .websimplify-simplified {
+        padding: 20px !important;
+        margin: 10px !important;
+        border-radius: 8px !important;
+    }
+    
+    .websimplify-split-container {
+        flex-direction: column !important;
+        gap: 16px !important;
+        padding: 16px !important;
+    }
+    
+    .websimplify-split-original,
+    .websimplify-split-simplified {
+        max-height: 50vh !important;
+        padding: 16px !important;
+    }
+    
+    .websimplify-heading {
+        font-size: 20px !important;
+    }
+    
+    .websimplify-paragraph {
+        font-size: 16px !important;
+    }
+}
+
+/* Accessibility improvements - Enhanced */
+.websimplify-simplified:focus-within {
+    outline: 3px solid #3498db !important;
+    outline-offset: 4px !important;
+}
+
+.websimplify-list-item:focus,
+.websimplify-paragraph:focus,
+.websimplify-heading:focus {
+    outline: 2px solid #3498db !important;
+    outline-offset: 2px !important;
+    background: #e3f2fd !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .websimplify-simplified {
+        border: 3px solid #000 !important;
+        background: #fff !important;
+    }
+    
+    .websimplify-paragraph,
+    .websimplify-list-item,
+    .websimplify-heading {
+        color: #000 !important;
+    }
+    
+    .websimplify-list-item {
+        border-left-color: #000 !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .websimplify-heatmap,
+    .websimplify-tooltip,
+    .websimplify-paragraph,
+    .websimplify-list-item,
+    .websimplify-loading::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Complexity tooltip for heatmap */
+.websimplify-complexity-tooltip {
+    position: fixed !important;
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    max-width: 250px !important;
+    z-index: 10002 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transform: translateY(10px) !important;
+    animation: websimplify-tooltip-in 0.3s ease forwards !important;
+}
+
+.websimplify-complexity-tooltip::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 50% !important;
+    margin-left: -6px !important;
+    border-width: 6px !important;
+    border-style: solid !important;
+    border-color: #2c3e50 transparent transparent transparent !important;
+}
+
+/* Enhanced tooltips with detailed metrics */
+.websimplify-enhanced-tooltip {
+    position: fixed !important;
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    font-size: 13px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    width: 320px !important;
+    z-index: 10003 !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4) !important;
+    opacity: 0 !important;
+    transform: translateY(10px) scale(0.95) !important;
+    animation: websimplify-enhanced-tooltip-in 0.3s ease forwards !important;
+}
+
+@keyframes websimplify-enhanced-tooltip-in {
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+    }
+}
+
+.tooltip-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.tooltip-title {
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+.tooltip-close {
+    cursor: pointer !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    opacity: 0.7 !important;
+    transition: opacity 0.2s ease !important;
+}
+
+.tooltip-close:hover {
+    opacity: 1 !important;
+}
+
+.tooltip-content {
+    padding: 12px 16px !important;
+}
+
+.metric-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+}
+
+.metric-label {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.metric-value {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+.improvement.positive {
+    color: #2ecc71 !important;
+    margin-left: 4px !important;
+}
+
+.improvement.neutral {
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin-left: 4px !important;
+}
+
+.original-preview {
+    margin-top: 12px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.preview-label {
+    font-size: 11px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.preview-text {
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 8px !important;
+    border-radius: 6px !important;
+    font-style: italic !important;
+}
+
+.tooltip-hint {
+    margin-top: 12px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    text-align: center !important;
+}
+
+/* Detailed comparison modal */
+.websimplify-comparison-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 10005 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+}
+
+.modal-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+.modal-content {
+    position: relative !important;
+    background: white !important;
+    border-radius: 16px !important;
+    max-width: 800px !important;
+    width: 100% !important;
+    max-height: 80vh !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    animation: websimplify-modal-in 0.3s ease !important;
+}
+
+@keyframes websimplify-modal-in {
+    from {
+        opacity: 0 !important;
+        transform: scale(0.9) translateY(20px) !important;
+    }
+    to {
+        opacity: 1 !important;
+        transform: scale(1) translateY(0) !important;
+    }
+}
+
+.modal-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 20px 24px !important;
+    border-bottom: 1px solid #e9ecef !important;
+    background: #f8f9fa !important;
+}
+
+.modal-header h3 {
+    margin: 0 !important;
+    font-size: 18px !important;
+    color: #2c3e50 !important;
+}
+
+.modal-close {
+    background: none !important;
+    border: none !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    color: #6c757d !important;
+    padding: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    transition: all 0.2s ease !important;
+}
+
+.modal-close:hover {
+    background: #e9ecef !important;
+    color: #495057 !important;
+}
+
+.comparison-container {
+    display: flex !important;
+    max-height: 400px !important;
+    overflow: hidden !important;
+}
+
+.comparison-side {
+    flex: 1 !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+}
+
+.comparison-side h4 {
+    margin: 0 0 12px 0 !important;
+    font-size: 14px !important;
+    color: #6c757d !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.original-side {
+    background: #f8f9fa !important;
+    border-right: 1px solid #e9ecef !important;
+}
+
+.simplified-side {
+    background: #ffffff !important;
+}
+
+.text-content {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 16px !important;
+}
+
+.text-stats {
+    display: flex !important;
+    gap: 16px !important;
+    font-size: 12px !important;
+    color: #6c757d !important;
+}
+
+.comparison-divider {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    background: #e9ecef !important;
+    font-size: 18px !important;
+    color: #6c757d !important;
+    font-weight: bold !important;
+}
+
+.modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    padding: 20px 24px !important;
+    border-top: 1px solid #e9ecef !important;
+    background: #f8f9fa !important;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    border: none !important;
+}
+
+.btn-primary {
+    background: #3498db !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background: #2980b9 !important;
+}
+
+.btn-secondary {
+    background: #6c757d !important;
+    color: white !important;
+}
+
+.btn-secondary:hover {
+    background: #5a6268 !important;
+}
+
+/* Status notifications */
+.websimplify-status-notification {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* Print styles */
+@media print {
+    .websimplify-simplified {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        background: white !important;
+    }
+    
+    .websimplify-tooltip,
+    .websimplify-heatmap,
+    .websimplify-complexity-tooltip,
+    .websimplify-enhanced-tooltip,
+    .websimplify-comparison-modal,
+    .websimplify-status-notification {
+        display: none !important;
+    }
+}
