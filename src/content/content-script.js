@@ -735,6 +735,18 @@ class WebSimplifyContent {
                     }
                     break;
 
+                case 'toggleLearningMode':
+                    try {
+                        this.toggleLearningMode();
+                        sendResponse({ success: true });
+                    } catch (error) {
+                        sendResponse({ 
+                            success: false, 
+                            error: 'Learning mode not available'
+                        });
+                    }
+                    break;
+
                 case 'testAI':
                     try {
                         const testResults = await this.testAIAPIs();
@@ -2611,6 +2623,25 @@ class WebSimplifyContent {
         `;
         
         document.head.appendChild(style);
+    }
+
+    // Learning Mode Methods
+    toggleLearningMode() {
+        // Load learning overlay if not already loaded
+        if (!document.getElementById('learning-overlay')) {
+            this.loadLearningOverlay();
+        }
+
+        // Send message to learning overlay
+        const event = new CustomEvent('toggleLearningMode');
+        document.dispatchEvent(event);
+    }
+
+    loadLearningOverlay() {
+        // Inject learning overlay script
+        const script = document.createElement('script');
+        script.src = chrome.runtime.getURL('src/content/learning-overlay.js');
+        document.head.appendChild(script);
     }
 
     // Performance monitoring
