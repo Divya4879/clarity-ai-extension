@@ -1,0 +1,32 @@
+{
+  "name": "websimplify-pro",
+  "version": "1.0.0",
+  "description": "Cognitive Load Optimizer - Transform complex web content into clear, accessible information instantly",
+  "main": "manifest.json",
+  "scripts": {
+    "dev": "echo 'Load extension in Chrome Developer Mode'",
+    "build": "echo 'Extension ready for production'",
+    "test": "echo 'Run manual tests on complex websites'",
+    "lint": "echo 'Code linting placeholder'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "ai",
+    "accessibility",
+    "simplification",
+    "cognitive-load",
+    "gemini-nano",
+    "chrome-ai"
+  ],
+  "author": "WebSimplify Pro Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/websimplify-pro"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "chrome": ">=120.0.0"
+  }
+}
