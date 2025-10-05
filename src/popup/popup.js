@@ -11,8 +11,111 @@ class WebSimplifyPopup {
         await this.getCurrentTab();
         await this.loadUserPreferences();
         this.setupEventListeners();
+        this.setupAccessibilityFeatures();
         this.updateUI();
         this.checkPageComplexity();
+    }
+
+    setupAccessibilityFeatures() {
+        // Setup live region for screen reader announcements
+        this.createLiveRegion();
+        
+        // Setup keyboard shortcuts
+        this.setupKeyboardShortcuts();
+        
+        // Setup focus management
+        this.setupFocusManagement();
+        
+        // Setup ARIA updates
+        this.setupARIAUpdates();
+    }
+
+    createLiveRegion() {
+        this.liveRegion = document.createElement('div');
+        this.liveRegion.setAttribute('aria-live', 'polite');
+        this.liveRegion.setAttribute('aria-atomic', 'true');
+        this.liveRegion.className = 'sr-only';
+        document.body.appendChild(this.liveRegion);
+    }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Alt + S: Toggle simplification
+            if (e.altKey && e.key === 's') {
+                e.preventDefault();
+                this.announceToScreenReader('Toggling page simplification');
+                this.toggleSimplification();
+            }
+
+            // Alt + R: Reset to original
+            if (e.altKey && e.key === 'r') {
+                e.preventDefault();
+                this.announceToScreenReader('Resetting to original content');
+                this.resetPage();
+            }
+
+            // Alt + H: Toggle heatmap
+            if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                this.announceToScreenReader('Toggling complexity heatmap');
+                this.toggleHeatmap();
+            }
+
+            // Escape: Close modals
+            if (e.key === 'Escape') {
+                this.closeActiveModals();
+            }
+        });
+    }
+
+    setupFocusManagement() {
+        // Ensure proper focus order
+        const focusableElements = document.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+        focusableElements.forEach((element, index) => {
+            element.setAttribute('tabindex', index === 0 ? '0' : '0');
+        });
+    }
+
+    setupARIAUpdates() {
+        // Update button states with ARIA
+        const buttons = document.querySelectorAll('button[aria-pressed]');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const isPressed = button.getAttribute('aria-pressed') === 'true';
+                button.setAttribute('aria-pressed', !isPressed);
+                
+                const action = button.textContent.trim();
+                this.announceToScreenReader(`${action} ${!isPressed ? 'activated' : 'deactivated'}`);
+            });
+        });
+    }
+
+    announceToScreenReader(message, priority = 'polite') {
+        if (this.liveRegion) {
+            this.liveRegion.setAttribute('aria-live', priority);
+            this.liveRegion.textContent = message;
+            
+            // Clear after announcement
+            setTimeout(() => {
+                this.liveRegion.textContent = '';
+            }, 1000);
+        }
+    }
+
+    closeActiveModals() {
+        const modals = document.querySelectorAll('[role="dialog"]');
+        modals.forEach(modal => {
+            if (modal.style.display !== 'none') {
+                const closeBtn = modal.querySelector('.modal-close');
+                if (closeBtn) {
+                    closeBtn.click();
+                    this.announceToScreenReader('Modal closed');
+                }
+            }
+        });
     }
 
     async getCurrentTab() {
