@@ -25,6 +25,11 @@
                 <span class="complexity-score" id="complexityScore" aria-label="Current page complexity score">--</span>
                 <span class="complexity-label">Complexity</span>
             </div>
+            <div class="confidence-indicator" id="confidenceIndicator" role="status" aria-live="polite" style="display: none;">
+                <span class="confidence-score" id="confidenceScore" aria-label="AI confidence score">--</span>
+                <span class="confidence-label">Confidence</span>
+                <div class="confidence-flags" id="confidenceFlags"></div>
+            </div>
         </header>
 
         <!-- Main Controls -->
@@ -690,6 +695,100 @@
                         <div class="profile-actions">
                             <button class="save-profile-btn" id="saveProfile">💾 Save Profile</button>
                             <button class="reset-profile-btn" id="resetProfile">🔄 Reset to Defaults</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confidence Review Modal -->
+        <div class="confidence-modal" id="confidenceModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🎯 AI Confidence Analysis</h2>
+                    <button class="modal-close" id="closeConfidence">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="confidence-content">
+                        <div class="confidence-overview">
+                            <div class="confidence-score-display">
+                                <div class="score-circle" id="confidenceCircle">
+                                    <span class="score-value" id="confidenceValue">--</span>
+                                    <span class="score-label">Confidence</span>
+                                </div>
+                                <div class="confidence-level" id="confidenceLevel">
+                                    <span class="level-text">Medium</span>
+                                    <span class="level-description">AI is moderately confident in this simplification</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="confidence-factors">
+                            <h3>Analysis Factors</h3>
+                            <div class="factors-grid">
+                                <div class="factor-item">
+                                    <span class="factor-label">Text Similarity</span>
+                                    <div class="factor-bar">
+                                        <div class="factor-fill" id="similarityFactor"></div>
+                                    </div>
+                                    <span class="factor-value" id="similarityValue">--</span>
+                                </div>
+                                <div class="factor-item">
+                                    <span class="factor-label">Complexity Reduction</span>
+                                    <div class="factor-bar">
+                                        <div class="factor-fill" id="complexityFactor"></div>
+                                    </div>
+                                    <span class="factor-value" id="complexityValue">--</span>
+                                </div>
+                                <div class="factor-item">
+                                    <span class="factor-label">Uncertainty Score</span>
+                                    <div class="factor-bar">
+                                        <div class="factor-fill" id="uncertaintyFactor"></div>
+                                    </div>
+                                    <span class="factor-value" id="uncertaintyValue">--</span>
+                                </div>
+                                <div class="factor-item">
+                                    <span class="factor-label">AI Model Confidence</span>
+                                    <div class="factor-bar">
+                                        <div class="factor-fill" id="aiConfidenceFactor"></div>
+                                    </div>
+                                    <span class="factor-value" id="aiConfidenceValue">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="confidence-flags" id="confidenceFlagsDetail">
+                            <h3>Confidence Flags</h3>
+                            <div class="flags-list" id="flagsList">
+                                <p class="no-flags">No confidence issues detected</p>
+                            </div>
+                        </div>
+                        
+                        <div class="confidence-recommendations">
+                            <h3>Recommendations</h3>
+                            <div class="recommendations-list" id="recommendationsList">
+                                <p class="no-recommendations">No specific recommendations</p>
+                            </div>
+                        </div>
+                        
+                        <div class="user-feedback">
+                            <h3>Your Feedback</h3>
+                            <p>Help improve AI confidence by rating this simplification:</p>
+                            <div class="feedback-buttons">
+                                <button class="feedback-btn positive" id="feedbackPositive">
+                                    <span class="feedback-icon">👍</span>
+                                    <span class="feedback-text">Good Simplification</span>
+                                </button>
+                                <button class="feedback-btn negative" id="feedbackNegative">
+                                    <span class="feedback-icon">👎</span>
+                                    <span class="feedback-text">Needs Improvement</span>
+                                </button>
+                            </div>
+                            <div class="feedback-comment" id="feedbackComment" style="display: none;">
+                                <textarea placeholder="Optional: Tell us what could be improved..." id="feedbackText"></textarea>
+                                <button class="submit-feedback" id="submitFeedback">Submit Feedback</button>
+                            </div>
                         </div>
                     </div>
                 </div>
