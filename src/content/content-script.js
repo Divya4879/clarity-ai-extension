@@ -74,6 +74,65 @@ class WebSimplifyContent {
         });
     }
 
+    // Confidence Analysis Methods
+    async performConfidenceAnalysis(originalText, simplifiedText, context) {
+        try {
+            // Load confidence analyzer if not already loaded
+            if (!window.ConfidenceAnalyzer) {
+                await this.loadConfidenceAnalyzer();
+            }
+
+            const confidenceAnalyzer = new window.ConfidenceAnalyzer();
+            this.currentConfidenceData = await confidenceAnalyzer.analyzeConfidence(
+                originalText, 
+                simplifiedText, 
+                context
+            );
+
+            // Store original and simplified text for feedback
+            this.currentOriginalText = originalText;
+            this.currentSimplifiedText = simplifiedText;
+
+            console.log('Confidence Analysis:', this.currentConfidenceData);
+
+        } catch (error) {
+            console.error('Confidence analysis failed:', error);
+            this.currentConfidenceData = null;
+        }
+    }
+
+    async loadConfidenceAnalyzer() {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('src/utils/confidence-analyzer.js');
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
+    async submitConfidenceFeedback(feedback) {
+        try {
+            if (!window.ConfidenceAnalyzer) {
+                await this.loadConfidenceAnalyzer();
+            }
+
+            const confidenceAnalyzer = new window.ConfidenceAnalyzer();
+            await confidenceAnalyzer.recordFeedback(
+                this.currentOriginalText,
+                this.currentSimplifiedText,
+                feedback.isPositive,
+                feedback.comment
+            );
+
+            return { success: true };
+
+        } catch (error) {
+            console.error('Failed to submit confidence feedback:', error);
+            throw error;
+        }
+    }
+
     async testAIAPIsOnLoad() {
         console.log('🧪 WebSimplify Pro: Testing Chrome AI APIs...');
         
@@ -775,6 +834,30 @@ class WebSimplifyContent {
                     }
                     break;
 
+                case 'getConfidenceAnalysis':
+                    try {
+                        const confidenceData = this.currentConfidenceData || null;
+                        sendResponse({ confidence: confidenceData });
+                    } catch (error) {
+                        sendResponse({ 
+                            success: false, 
+                            error: 'Failed to get confidence analysis'
+                        });
+                    }
+                    break;
+
+                case 'submitConfidenceFeedback':
+                    try {
+                        await this.submitConfidenceFeedback(message.feedback);
+                        sendResponse({ success: true });
+                    } catch (error) {
+                        sendResponse({ 
+                            success: false, 
+                            error: 'Failed to submit feedback'
+                        });
+                    }
+                    break;
+
                 case 'toggleLearningMode':
                     try {
                         this.toggleLearningMode();
@@ -872,6 +955,13 @@ class WebSimplifyContent {
                 // Calculate reading time
                 const readingTime = this.calculateReadingTime(text, simplifiedText);
 
+                // Perform confidence analysis
+                await this.performConfidenceAnalysis(text, simplifiedText, {
+                    domain: window.location.hostname,
+                    userLevel: contextAnalysis.domainFamiliarity.level,
+                    targetAudience: adaptiveLevel
+                });
+
                 // Add accessibility enhancements
                 this.addAccessibilityFeatures();
 
@@ -883,7 +973,8 @@ class WebSimplifyContent {
                     readingTime: readingTime,
                     contextual: true,
                     adaptiveLevel: adaptiveLevel,
-                    domainFamiliarity: contextAnalysis.domainFamiliarity.level
+                    domainFamiliarity: contextAnalysis.domainFamiliarity.level,
+                    confidence: this.currentConfidenceData
                 };
             } catch (error) {
                 console.error('Simplification error:', error);
