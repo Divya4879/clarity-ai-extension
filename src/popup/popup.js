@@ -336,7 +336,24 @@ class WebSimplifyPopup {
             this.generateNewExample();
         });
 
-        // Profile modal
+        // Confidence modal
+        document.getElementById('confidenceIndicator').addEventListener('click', () => {
+            this.openConfidenceAnalysis();
+        });
+        document.getElementById('closeConfidence').addEventListener('click', () => {
+            this.closeConfidenceAnalysis();
+        });
+
+        // Feedback buttons
+        document.getElementById('feedbackPositive').addEventListener('click', () => {
+            this.showFeedbackComment(true);
+        });
+        document.getElementById('feedbackNegative').addEventListener('click', () => {
+            this.showFeedbackComment(false);
+        });
+        document.getElementById('submitFeedback').addEventListener('click', () => {
+            this.submitUserFeedback();
+        });
         document.getElementById('closeProfile').addEventListener('click', () => {
             this.closeProfileSetup();
         });
@@ -1444,6 +1461,196 @@ class WebSimplifyPopup {
             script.onerror = reject;
             document.head.appendChild(script);
         });
+    }
+
+    // Confidence Analysis Methods
+    async openConfidenceAnalysis() {
+        try {
+            // Get confidence data from content script
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'getConfidenceAnalysis'
+            });
+
+            if (response && response.confidence) {
+                this.displayConfidenceAnalysis(response.confidence);
+                document.getElementById('confidenceModal').style.display = 'flex';
+            } else {
+                this.showStatus('No confidence data available', 'info');
+            }
+        } catch (error) {
+            this.showStatus('Confidence analysis not available', 'error');
+        }
+    }
+
+    closeConfidenceAnalysis() {
+        document.getElementById('confidenceModal').style.display = 'none';
+    }
+
+    displayConfidenceAnalysis(confidenceData) {
+        const { confidence, level, factors, flags, recommendations } = confidenceData;
+
+        // Update confidence score display
+        document.getElementById('confidenceValue').textContent = Math.round(confidence * 100) + '%';
+        
+        // Update confidence circle
+        const circle = document.getElementById('confidenceCircle');
+        const angle = confidence * 360;
+        circle.style.setProperty('--confidence-angle', angle + 'deg');
+
+        // Update confidence level
+        const levelElement = document.getElementById('confidenceLevel');
+        const levelText = levelElement.querySelector('.level-text');
+        const levelDesc = levelElement.querySelector('.level-description');
+        
+        levelText.textContent = level.charAt(0).toUpperCase() + level.slice(1);
+        levelDesc.textContent = this.getConfidenceLevelDescription(level);
+
+        // Update factors
+        this.updateConfidenceFactors(factors);
+
+        // Update flags
+        this.updateConfidenceFlags(flags);
+
+        // Update recommendations
+        this.updateConfidenceRecommendations(recommendations);
+    }
+
+    getConfidenceLevelDescription(level) {
+        const descriptions = {
+            high: 'AI is highly confident in this simplification',
+            medium: 'AI is moderately confident in this simplification',
+            low: 'AI has low confidence - manual review recommended'
+        };
+        return descriptions[level] || 'Confidence level unknown';
+    }
+
+    updateConfidenceFactors(factors) {
+        const factorMappings = {
+            textSimilarity: { element: 'similarityFactor', value: 'similarityValue' },
+            complexityReduction: { element: 'complexityFactor', value: 'complexityValue' },
+            uncertaintyScore: { element: 'uncertaintyFactor', value: 'uncertaintyValue' },
+            aiModelConfidence: { element: 'aiConfidenceFactor', value: 'aiConfidenceValue' }
+        };
+
+        Object.entries(factorMappings).forEach(([factor, { element, value }]) => {
+            const factorValue = factors[factor] || 0;
+            const fillElement = document.getElementById(element);
+            const valueElement = document.getElementById(value);
+
+            if (fillElement && valueElement) {
+                fillElement.style.width = (factorValue * 100) + '%';
+                valueElement.textContent = Math.round(factorValue * 100) + '%';
+            }
+        });
+    }
+
+    updateConfidenceFlags(flags) {
+        const flagsList = document.getElementById('flagsList');
+        
+        if (!flags || flags.length === 0) {
+            flagsList.innerHTML = '<p class="no-flags">No confidence issues detected</p>';
+            return;
+        }
+
+        flagsList.innerHTML = flags.map(flag => `
+            <div class="flag-item ${flag.type}">
+                <span class="flag-icon">${this.getFlagIcon(flag.type)}</span>
+                <span class="flag-text">${flag.message}</span>
+                <span class="flag-severity">${flag.severity}</span>
+            </div>
+        `).join('');
+    }
+
+    updateConfidenceRecommendations(recommendations) {
+        const recommendationsList = document.getElementById('recommendationsList');
+        
+        if (!recommendations || recommendations.length === 0) {
+            recommendationsList.innerHTML = '<p class="no-recommendations">No specific recommendations</p>';
+            return;
+        }
+
+        recommendationsList.innerHTML = recommendations.map(rec => `
+            <div class="recommendation-item">
+                <span class="recommendation-icon">💡</span>
+                <span class="recommendation-text">${rec.message}</span>
+            </div>
+        `).join('');
+    }
+
+    getFlagIcon(type) {
+        const icons = {
+            warning: '⚠️',
+            uncertainty: '❓',
+            complexity: '🔍',
+            similarity: '📊',
+            ai_uncertainty: '🤖',
+            error: '❌'
+        };
+        return icons[type] || '⚠️';
+    }
+
+    showFeedbackComment(isPositive) {
+        this.currentFeedbackType = isPositive;
+        document.getElementById('feedbackComment').style.display = 'block';
+        document.getElementById('feedbackText').focus();
+    }
+
+    async submitUserFeedback() {
+        try {
+            const comment = document.getElementById('feedbackText').value;
+            
+            // Send feedback to content script
+            const response = await chrome.tabs.sendMessage(this.currentTab.id, {
+                action: 'submitConfidenceFeedback',
+                feedback: {
+                    isPositive: this.currentFeedbackType,
+                    comment: comment
+                }
+            });
+
+            if (response && response.success) {
+                this.showStatus('Thank you for your feedback!', 'success');
+                this.closeConfidenceAnalysis();
+            } else {
+                this.showStatus('Failed to submit feedback', 'error');
+            }
+        } catch (error) {
+            this.showStatus('Failed to submit feedback', 'error');
+        }
+    }
+
+    updateConfidenceIndicator(confidenceData) {
+        const indicator = document.getElementById('confidenceIndicator');
+        const score = document.getElementById('confidenceScore');
+        const flags = document.getElementById('confidenceFlags');
+
+        if (confidenceData) {
+            indicator.style.display = 'flex';
+            score.textContent = Math.round(confidenceData.confidence * 100) + '%';
+            
+            // Update indicator color based on confidence level
+            const level = confidenceData.level;
+            if (level === 'high') {
+                score.style.color = '#51cf66';
+            } else if (level === 'medium') {
+                score.style.color = '#ffa726';
+            } else {
+                score.style.color = '#ff6b6b';
+            }
+
+            // Show flags if any
+            flags.innerHTML = '';
+            if (confidenceData.flags && confidenceData.flags.length > 0) {
+                confidenceData.flags.forEach(flag => {
+                    const flagElement = document.createElement('div');
+                    flagElement.className = `confidence-flag ${flag.type}`;
+                    flagElement.title = flag.message;
+                    flags.appendChild(flagElement);
+                });
+            }
+        } else {
+            indicator.style.display = 'none';
+        }
     }
 }
 }
